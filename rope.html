@@ -3,33 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>体育教案：速度跳绳 L3</title>
+    <title>第3课：跳绳节奏与轻跳</title>
     <style>
-        :root { --blue: #007AFF; --bg: #F5F7FA; --card: #FFFFFF; --text: #1D1D1F; }
-        body { font-family: -apple-system, sans-serif; background: var(--bg); color: var(--text); margin: 0; padding-bottom: 90px; }
+        :root { --blue: #007AFF; --light-blue: #E5F1FF; --text: #1D1D1F; --gray: #8E8E93; }
+        body { font-family: -apple-system, sans-serif; background: #FFFFFF; color: var(--text); margin: 0; padding-bottom: 80px; }
         
-        .header { background: var(--blue); color: white; padding: 20px 15px; text-align: center; }
+        /* 蓝白清新页头 */
+        .header { background: var(--blue); color: white; padding: 20px; text-align: center; }
         .header h1 { margin: 0; font-size: 20px; }
+        .header p { margin: 5px 0 0; font-size: 13px; opacity: 0.9; }
 
-        /* 专业双色计时器 */
-        .timer-box { background: var(--card); margin: 15px; padding: 20px; border-radius: 16px; text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
-        #display { font-size: 52px; font-weight: bold; color: var(--blue); margin: 10px 0; font-family: monospace; }
+        /* 核心计时器 (30s & 60s) */
+        .timer-panel { background: var(--light-blue); margin: 15px; padding: 20px; border-radius: 16px; text-align: center; }
+        #display { font-size: 60px; font-weight: bold; color: var(--blue); font-family: monospace; margin: 10px 0; }
         .btn-group { display: flex; gap: 10px; }
-        .btn { flex: 1; border: none; padding: 12px; border-radius: 10px; color: white; font-weight: bold; font-size: 14px; background: var(--blue); }
-        .btn-gray { background: #E5E5EA; color: #333; }
+        .btn { flex: 1; border: none; padding: 15px; border-radius: 12px; color: white; font-weight: bold; font-size: 14px; background: var(--blue); cursor: pointer; }
+        .btn-reset { background: #D1D1D6; color: #333; }
 
-        /* 碎片化关卡卡片 */
-        .stage-card { background: var(--card); margin: 15px; border-radius: 16px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
-        .stage-header { background: #F2F2F7; padding: 12px 15px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #E5E5EA; }
-        .stage-title { font-weight: bold; color: var(--blue); font-size: 16px; }
-        .time-tag { font-size: 12px; color: #8E8E93; }
+        /* 教学环节：碎片化、高频、有趣 */
+        .section-title { padding: 15px 15px 5px; font-size: 14px; color: var(--blue); font-weight: bold; }
+        .card { background: white; margin: 10px 15px; padding: 15px; border-radius: 12px; border: 1px solid #E5E5EA; box-shadow: 0 2px 5px rgba(0,0,0,0.02); }
+        .card-h { display: flex; justify-content: space-between; font-weight: bold; margin-bottom: 8px; }
+        .card-t { font-size: 12px; color: var(--gray); }
+        .card-b { font-size: 14px; line-height: 1.6; color: #3A3A3C; }
         
-        /* 高清动作演示区 */
-        .gif-container { width: 100%; background: #fff; min-height: 200px; border-bottom: 1px solid #F2F2F7; }
-        .gif-container img { width: 100%; height: auto; display: block; }
-
-        .stage-content { padding: 15px; font-size: 14px; line-height: 1.6; }
-        .stage-content b { color: var(--blue); }
+        /* 简单动作示意图 (纯CSS绘制，绝不乱码) */
+        .visual-tip { background: #F2F2F7; padding: 10px; border-radius: 8px; margin: 10px 0; font-family: monospace; text-align: center; color: var(--blue); }
 
         .footer { position: fixed; bottom: 0; width: 100%; background: white; display: flex; justify-content: space-around; padding: 15px 0; border-top: 1px solid #E5E5EA; }
     </style>
@@ -37,83 +36,78 @@
 <body>
 
 <div class="header">
-    <h1>1-2年级速度跳绳 (第3课)</h1>
-    <p style="font-size:12px; margin:5px 0 0; opacity:0.8;">9人小班 | 90分钟趣味实战</p>
+    <h1>跳绳 L3：弹簧豆豆跳</h1>
+    <p>1-2年级 (9人小班) | 90分钟实战教案</p>
 </div>
 
-<div class="timer-box">
+<div class="timer-panel">
+    <div id="status" style="font-size: 12px; color: var(--blue); font-weight: bold;">准备挑战</div>
     <div id="display">00:00</div>
     <div class="btn-group">
-        <button class="btn" onclick="run(30)">30s 爆发赛</button>
-        <button class="btn" onclick="run(60)">60s 达标赛</button>
-        <button class="btn btn-gray" onclick="reset()">重置</button>
+        <button class="btn" onclick="run(30)">30s 挑战</button>
+        <button class="btn" onclick="run(60)">60s 测评</button>
+        <button class="btn btn-reset" onclick="reset()">复位</button>
     </div>
 </div>
 
-<div class="stage-card">
-    <div class="stage-header"><span class="stage-title">1. 热身：揪尾巴游戏</span><span class="time-tag">15'</span></div>
-    <div class="stage-content">
-        <b>玩法：</b>9人腰后塞绳当尾巴，在圆圈内互相抓捕。<br>
-        <b>目的：</b>通过变向跑活动踝关节，提升孩子兴奋度。
-    </div>
+<div class="section-title">第一部分：热身与习惯 (20')</div>
+<div class="card">
+    <div class="card-h"><span>1. 揪尾巴大逃杀</span><span class="card-t">10'</span></div>
+    <div class="card-b">绳子塞腰后。9人互揪，看谁留到最后。侧重高频变向跑，活动脚踝。</div>
+</div>
+<div class="card">
+    <div class="card-h"><span>2. 量绳侦探</span><span class="card-t">10'</span></div>
+    <div class="card-b">脚踩中点拉直绳。<b>标准：</b>把手齐锁骨。教练逐一检查 9 个人的绳长，太长就打个结。</div>
 </div>
 
-<div class="stage-card">
-    <div class="stage-header"><span class="stage-title">2. 核心：并脚跳技术</span><span class="time-tag">20'</span></div>
-    <div class="gif-container">
-        <img src="https://fitnessprogramer.com/wp-content/uploads/2021/04/Jump-Rope.gif" alt="并脚跳演示">
-    </div>
-    <div class="stage-content">
-        <b>技术要点：</b><br>
-        1. <b>手腕：</b>双臂贴身，转动旋转手腕画圆。<br>
-        2. <b>起跳：</b>并脚跳起约 5-10cm，脚尖落地（猫咪跳）。
-    </div>
+<div class="section-title">第二部分：核心技能 (45')</div>
+<div class="card">
+    <div class="card-h"><span>3. 动作：手腕摇小圆</span><span class="card-t">15'</span></div>
+    <div class="visual-tip">臂 贴 身 — 腕 摇 圆</div>
+    <div class="card-b">单手握两柄，在侧面摇，听绳子打地的“啪嗒”声。要求声音节奏要稳。</div>
+</div>
+<div class="card">
+    <div class="card-h"><span>4. 动作：并脚猫咪跳</span><span class="card-t">15'</span></div>
+    <div class="visual-tip">并 脚 — 膝 弯 — 脚 尖 跳</div>
+    <div class="card-b">跳起高度 5cm。纠错：杜绝“全脚掌”落地声。谁跳得响，谁就去当“重重象”，安静的当“轻盈猫”。</div>
+</div>
+<div class="card">
+    <div class="card-h"><span>5. 游戏：红绿灯行进跳</span><span class="card-t">15'</span></div>
+    <div class="card-b">绿灯边跳边跑前进，红灯立刻踩绳立定。训练对绳子的控制力和瞬间制动能力。</div>
 </div>
 
-<div class="stage-card">
-    <div class="stage-header"><span class="stage-title">3. 纠错：量绳侦探</span><span class="time-tag">15'</span></div>
-    <div class="stage-content">
-        <b>9人特供：</b>教练逐一检查绳长（脚踩中点，手柄齐锁骨）。针对 1-2 年级常见的“抡大臂”动作，进行手把手纠正。
-    </div>
+<div class="section-title">第三部分：测评与总结 (25')</div>
+<div class="card">
+    <div class="card-h"><span>6. 30s/60s 计时赛</span><span class="card-t">15'</span></div>
+    <div class="card-b">利用上方计时器，分组测验。记录 9 人成绩，建立自信心。</div>
 </div>
-
-<div class="stage-card">
-    <div class="stage-header"><span class="stage-title">4. 游戏：红绿灯行进跳</span><span class="time-tag">20'</span></div>
-    <div class="gif-container">
-        <img src="https://fitnessprogramer.com/wp-content/uploads/2023/09/Jumping-Rope-Back-and-Forth.gif" alt="行进跳演示">
-    </div>
-    <div class="stage-content">
-        <b>规则：</b>绿灯跳着走，红灯立刻踩绳停。看谁先到达终点且不触绳。
-    </div>
-</div>
-
-<div class="stage-card">
-    <div class="stage-header"><span class="stage-title">5. 素质：30s 冲刺挑战</span><span class="time-tag">20'</span></div>
-    <div class="stage-content">
-        利用上方计时器进行 3 次 30s 冲刺。最后进行拉伸放松，评选今日“节奏之王”。
-    </div>
+<div class="card">
+    <div class="card-h"><span>7. 放松与“豆豆王”评选</span><span class="card-t">10'</span></div>
+    <div class="card-b">坐地拉伸小腿（小猫推墙）。颁发虚拟勋章。</div>
 </div>
 
 <div class="footer">
-    <span style="color:var(--blue); font-weight:bold;">📋 教案</span>
-    <span style="color:#8E8E93;">📊 数据</span>
+    <span style="color:var(--blue); font-weight:bold;">📋 详情</span>
+    <span style="color:var(--gray);">📊 记录</span>
 </div>
 
 <script>
-    let timer = null;
+    let t = null;
     function run(s) {
-        clearInterval(timer);
+        clearInterval(t);
         let left = s;
         update(left);
-        timer = setInterval(() => {
+        document.getElementById('status').innerText = s + "秒挑战开始！";
+        t = setInterval(() => {
             left--; update(left);
             if (left <= 0) {
-                clearInterval(timer);
+                clearInterval(t);
+                document.getElementById('status').innerText = "挑战结束！";
                 alert("⏰ 时间到！");
             }
         }, 1000);
     }
-    function reset() { clearInterval(timer); update(0); }
+    function reset() { clearInterval(t); update(0); document.getElementById('status').innerText = "准备挑战"; }
     function update(s) {
         let m = Math.floor(s/60);
         let sec = s%60;
