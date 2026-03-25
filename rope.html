@@ -3,181 +3,119 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>小小飞人跳绳大作战 - L3/16</title>
+    <title>第3课：跳绳大作战</title>
     <style>
-        :root { --p-green: #2ecc71; --w-yellow: #f1c40f; --d-red: #e74c3c; --bg: #f4f7f6; --txt: #333; }
-        body { font-family: -apple-system, sans-serif; background: var(--bg); color: var(--txt); margin: 0; padding-bottom: 90px; }
+        :root { --p: #2ecc71; --w: #f1c40f; --d: #e74c3c; --bg: #f4f7f6; }
+        body { font-family: sans-serif; background: var(--bg); margin: 0; padding-bottom: 90px; }
+        .header { background: var(--p); color: white; padding: 20px; text-align: center; }
         
-        /* 顶部看板 */
-        .header { background: linear-gradient(135deg, #27ae60, #2ecc71); color: white; padding: 25px 15px; text-align: center; border-radius: 0 0 25px 25px; box-shadow: 0 5px 15px rgba(46,204,113,0.3); }
-        .header h1 { margin: 0; font-size: 24px; letter-spacing: 1px; }
-        .header p { margin: 8px 0 0; opacity: 0.9; font-size: 13px; }
-
-        /* 课堂总计计时器 */
-        .master-clock { background: white; margin: -20px 20px 20px; padding: 20px; border-radius: 18px; box-shadow: 0 5px 20px rgba(0,0,0,0.1); text-align: center; border: 1px solid #eee; }
-        .clock-val { font-size: 48px; font-weight: bold; color: var(--d-red); font-family: monospace; font-variant-numeric: tabular-nums; }
-        .control-btns { display: flex; gap: 10px; justify-content: center; margin-top: 15px; }
-        .btn { border: none; padding: 12px 20px; border-radius: 25px; color: white; font-weight: bold; font-size: 14px; cursor: pointer; }
-
-        /* 8大趣味关卡流程 */
-        .timeline { margin: 15px; }
-        .level-card { background: white; margin-bottom: 18px; border-radius: 15px; overflow: hidden; border-left: 6px solid var(--p-green); box-shadow: 0 3px 10px rgba(0,0,0,0.05); }
-        .level-head { background: #eafaf1; padding: 12px 18px; display: flex; justify-content: space-between; align-items: center; }
-        .level-title { font-weight: bold; font-size: 17px; color: #166534; }
-        .time-tag { font-size: 12px; color: #666; background: #e0e0e0; padding: 3px 10px; border-radius: 12px; }
+        /* 核心计时器区域 */
+        .timer-zone { background: white; margin: 15px; padding: 20px; border-radius: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); text-align: center; }
+        #display { font-size: 50px; font-weight: bold; color: var(--d); font-family: monospace; margin: 10px 0; }
+        .btn-group { display: flex; gap: 10px; justify-content: center; }
+        .btn { border: none; padding: 12px 15px; border-radius: 10px; color: white; font-weight: bold; flex: 1; font-size: 14px; }
         
-        /* 动画/图片植入区 */
-        .gif-box { width: 100%; height: auto; background: #000; display: block; }
-        .gif-box img { width: 100%; height: auto; display: block; }
-
-        .level-body { padding: 18px; font-size: 15px; line-height: 1.6; color: #555; }
-        .level-body b { color: #333; }
-        .level-body ul { padding-left: 18px; margin: 10px 0; }
+        /* 动作演示（用代码画图，绝不乱码） */
+        .svg-demo { background: #333; width: 100%; height: 200px; display: flex; align-items: center; justify-content: center; }
         
-        /* 老师口诀卡 */
-        .kou-jue { background: #fff9db; border: 1px dashed var(--w-yellow); margin: 15px; padding: 15px; border-radius: 12px; color: #856404; font-size: 14px; }
-        .kou-jue b { font-size: 15px; display: block; margin-bottom: 5px; }
-
-        /* 评价系统 */
-        .medal-zone { background: white; margin: 15px; padding: 20px; border-radius: 15px; text-align: center; border: 1px solid #eee; }
-        .medal-box { display: flex; justify-content: space-around; margin-top: 15px; }
-        .medal-item { text-align: center; opacity: 0.3; transform: scale(0.9); transition: 0.3s; }
-        .medal-item.active { opacity: 1; transform: scale(1.1); color: var(--p-green); }
-        .medal-icon { font-size: 40px; margin-bottom: 5px; }
-
-        .footer-nav { position: fixed; bottom: 0; width: 100%; background: rgba(255,255,255,0.95); backdrop-filter: blur(10px); display: flex; justify-content: space-around; padding: 15px 0; border-top: 1px solid #ddd; z-index: 100; }
-        .nav-item { color: #7f8c8d; text-decoration: none; font-size: 12px; text-align: center; }
-        .nav-item.active { color: var(--p-green); font-weight: bold; }
+        .card { background: white; margin: 15px; border-radius: 12px; border-left: 5px solid var(--p); padding: 15px; }
+        .title { font-weight: bold; font-size: 18px; margin-bottom: 10px; display: flex; justify-content: space-between; }
+        .time-tag { font-size: 12px; color: #999; }
+        ul { padding-left: 20px; font-size: 15px; line-height: 1.6; }
     </style>
 </head>
 <body>
 
 <div class="header">
-    <h1>小小飞人跳绳大作战</h1>
-    <p>1-2年级 | 9名学生人手一绳 | 第 3 课 / 共 16 课</p>
+    <h1>第3课：小小飞人 (9人班)</h1>
+    <p>90分钟课堂 | 人手一绳</p>
 </div>
 
-<div class="master-clock">
-    <div style="font-size:12px; color:#999; margin-bottom:5px;">课堂剩余时间</div>
-    <div class="clock-val" id="master-clock">90:00</div>
-    <div class="control-btns">
-        <button class="btn" style="background:var(--p-green)" onclick="startMasterClock()">开始上课</button>
-        <button class="btn" style="background:var(--w-yellow)" onclick="setQuickTimer(30)">30s挑战</button>
-    </div>
-</div>
-
-<div class="kou-jue">
-    <b>📢 教练特别提示 (1-2年级口诀)：</b>
-    手摇圆圈像滑板，脚尖点地轻如猫，<br>手臂夹紧不乱动，呼吸均匀顶呱呱！
-</div>
-
-<div class="timeline">
-
-    <div class="level-card">
-        <div class="level-head"><span class="level-title">关卡一：小动物跑跑跑</span><span class="time-tag">10'</span></div>
-        <div class="level-body">
-            - **慢跑模仿：** 模仿小猫走路（轻）、小狗快跑（快）、小猴子圆肩跑。<br>
-            - **听数停：** 听到教练喊“3”，3人一组抱抱；喊“1”，全员单脚站立。
-        </div>
-    </div>
-
-    <div class="level-card" style="border-left-color: var(--w-yellow);">
-        <div class="level-head"><span class="level-title">关卡二：我是绳子小主人</span><span class="time-tag">10'</span></div>
-        <div class="level-body">
-            - **量绳挑战：** 孩子们踩住绳中，拉直把手到锁骨位置（1年级可齐乳头）。绳子不能拖地。<br>
-            - **手型口诀：** “大臂贴贴身，手腕转转圈”。教练逐一纠正 9 个孩子。
-        </div>
-    </div>
-
-    <div class="level-card" style="border-left-color: var(--w-yellow);">
-        <div class="level-head"><span class="level-title">关卡三：听音摇摇摇</span><span class="time-tag">15'</span></div>
-        <div class="gif-box">
-            <img src="data:image/gif;base64,${base64_lat_pulldown_gif}" alt="跳绳标准演示" class="action-gif">
-        </div>
-        <div class="level-body">
-            - **徒手练习：** 跟着教练击掌节奏（1秒1下），模仿摇绳和并脚跳。<br>
-            - **纠错：** 重点解决“全脚掌落地”和“抡大臂”问题。
-        </div>
-    </div>
-
-    <div class="level-card" style="border-left-color: var(--d-red);">
-        <div class="level-head"><span class="level-title">关卡四：挑战地雷阵</span><span class="time-tag">15'</span></div>
-        <div class="level-body">
-            - **玩法：** 教练抡起一根长绳在离地 10cm 高度滑过。9 个孩子围成圆圈，需要在绳子扫过时并脚跳起避开。碰绳就算触雷！
-        </div>
-    </div>
-
-    <div class="level-card" style="border-left-color: var(--p-green);">
-        <div class="level-head"><span class="level-title">关卡五：我可以连续跳啦</span><span class="time-tag">15'</span></div>
-        <div class="level-body">
-            - **个人挑战：** 利用人手一绳优势，让孩子练习“摇绳-起跳-摇绳”的连续动作。<br>
-            - **教练评价：** 9 个孩子每个人必须连续跳出至少 3 个才算通关。
-        </div>
-    </div>
-
-    <div class="level-card" style="border-left-color: #9b59b6;">
-        <div class="level-head"><span class="level-title">关卡六：小小飞人体能关</span><span class="time-tag">10'</span></div>
-        <div class="level-body">
-            - **闯关一：** 快速高抬腿 15次 x 2组。<br>
-            - **闯关二：** 小兔子跳跃障碍（利用绳子摆地）。
-        </div>
-    </div>
-
-    <div class="level-card" style="border-left-color: #7f8c8d;">
-        <div class="level-head"><span class="level-title">关卡七：放松与评价</span><span class="time-tag">15'</span></div>
-        <div class="level-body">
-            - **互相放松：** 两人一组，互相轻敲背部、手臂。<br>
-            - **颁勋章：** 选出今天“节奏最稳”、“落地点最轻”、“最友爱”的孩子。
-        </div>
+<div class="timer-zone">
+    <div id="status" style="font-size: 14px; color: #666;">准备挑战</div>
+    <div id="display">00:00</div>
+    <div class="btn-group">
+        <button class="btn" style="background:var(--w)" onclick="runTimer(30)">30秒挑战</button>
+        <button class="btn" style="background:var(--p)" onclick="runTimer(60)">60秒测验</button>
+        <button class="btn" style="background:#95a5a6" onclick="resetTimer()">复位</button>
     </div>
 </div>
 
-<div class="medal-zone">
-    <div style="font-size:16px; font-weight:bold; color:var(--p-green);">🏆 今日成就勋章</div>
-    <p style="font-size:12px; color:#999;">点击勋章颁发给今天表现最好的宝贝们</p>
-    <div class="medal-box">
-        <div class="medal-item" onclick="this.classList.toggle('active')">
-            <div class="medal-icon">🐇</div><div class="medal-text">轻如猫咪</div>
-        </div>
-        <div class="medal-item" onclick="this.classList.toggle('active')">
-            <div class="medal-icon">⏱️</div><div class="medal-text">节奏达人</div>
-        </div>
-        <div class="medal-item" onclick="this.classList.toggle('active')">
-            <div class="medal-icon">🤝</div><div class="medal-text">团队之星</div>
-        </div>
-    </div>
+<div class="svg-demo">
+    <svg width="200" height="150" viewBox="0 0 200 150">
+        <circle cx="100" cy="40" r="15" fill="#fff"/> <line x1="100" y1="55" x2="100" y2="100" stroke="#fff" stroke-width="5"/> <line x1="100" y1="100" x2="85" y2="130" stroke="#fff" stroke-width="5"/> <line x1="100" y1="100" x2="115" y2="130" stroke="#fff" stroke-width="5"/>
+        <path d="M70,80 Q100,20 130,80" fill="none" stroke="#f1c40f" stroke-width="3"/> <text x="55" y="145" fill="#aaa" font-size="12">落地轻如猫 | 手腕摇圆圈</text>
+    </svg>
 </div>
 
-<div class="footer-nav">
-    <a href="index.html" class="nav-item">💪 健身</a>
-    <a href="#" class="nav-item active">🏫 教案</a>
-    <a href="#" class="nav-item">📊 记录</a>
+<div class="card">
+    <div class="title">一、热身游戏 (15') <span class="time-tag">第1-15分钟</span></div>
+    <ul>
+        <li><b>躲绳子：</b>绳子摆地上，9人练习侧跳避让。</li>
+        <li><b>关节操：</b>重点活动手腕和脚踝。</li>
+    </ul>
+</div>
+
+<div class="card" style="border-left-color:var(--w)">
+    <div class="title">二、技能精修 (45') <span class="time-tag">第16-60分钟</span></div>
+    <ul>
+        <li><b>量绳：</b>踩中点，拉直手柄至锁骨。</li>
+        <li><b>节奏：</b>教练击掌，学生并脚空跳。</li>
+        <li><b>纠错：</b>杜绝“抡大臂”，练习“手腕摇”。</li>
+    </ul>
+</div>
+
+<div class="card" style="border-left-color:var(--d)">
+    <div class="title">三、比赛与放松 (30') <span class="time-tag">第61-90分钟</span></div>
+    <ul>
+        <li><b>30s挑战：</b>看谁跳得最稳。</li>
+        <li><b>60s测验：</b>记录每人跳的数量。</li>
+        <li><b>颁奖：</b>评选今天的“节奏之王”。</li>
+    </ul>
 </div>
 
 <script>
-    let masterSecs = 90 * 60;
-    let masterTimer = null;
-    let quickTimer = null;
+    let timerId = null;
+    let audioCtx = null;
 
-    function startMasterClock() {
-        if(masterTimer) return;
-        updateDisplay(masterSecs);
-        masterTimer = setInterval(() => {
-            masterSecs--;
-            updateDisplay(masterSecs);
-            if(masterSecs <= 0) clearInterval(masterTimer);
+    function runTimer(seconds) {
+        clearInterval(timerId);
+        let timeLeft = seconds;
+        document.getElementById('status').innerText = seconds + "秒挑战进行中！";
+        updateDisplay(timeLeft);
+
+        timerId = setInterval(() => {
+            timeLeft--;
+            updateDisplay(timeLeft);
+            if (timeLeft <= 0) {
+                clearInterval(timerId);
+                document.getElementById('status').innerText = "时间到！休息一下";
+                beep(); // 声音提醒
+                alert("叮！时间到！");
+            }
         }, 1000);
     }
 
-    function setQuickTimer(s) {
-        alert("准备开始 " + s + " 秒挑战！全班倒计时！");
+    function resetTimer() {
+        clearInterval(timerId);
+        document.getElementById('display').innerText = "00:00";
+        document.getElementById('status').innerText = "准备挑战";
     }
 
     function updateDisplay(s) {
-        let m = Math.floor(s / 60);
-        let sec = s % 60;
-        document.getElementById('master-clock').innerText = 
-            (m < 10 ? '0' : '') + m + ':' + (sec < 10 ? '0' : '') + sec;
+        let mins = Math.floor(s / 60);
+        let secs = s % 60;
+        document.getElementById('display').innerText = 
+            (mins < 10 ? '0' : '') + mins + ":" + (secs < 10 ? '0' : '') + secs;
+    }
+
+    // 简易提示音功能
+    function beep() {
+        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        let osc = audioCtx.createOscillator();
+        osc.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + 0.5);
     }
 </script>
 
