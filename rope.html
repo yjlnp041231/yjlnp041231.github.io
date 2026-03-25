@@ -3,32 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>第3课：跳绳节奏与轻跳</title>
+    <title>跳绳教案 L3：弹簧豆豆跳</title>
     <style>
-        :root { --blue: #007AFF; --light-blue: #E5F1FF; --text: #1D1D1F; --gray: #8E8E93; }
-        body { font-family: -apple-system, sans-serif; background: #FFFFFF; color: var(--text); margin: 0; padding-bottom: 80px; }
+        :root { --blue: #007AFF; --bg: #F2F7FF; --card: #FFFFFF; --text: #1D1D1F; --accent: #FF9500; }
+        body { font-family: -apple-system, sans-serif; background: var(--bg); color: var(--text); margin: 0; padding-bottom: 60px; }
         
-        /* 蓝白清新页头 */
-        .header { background: var(--blue); color: white; padding: 20px; text-align: center; }
-        .header h1 { margin: 0; font-size: 20px; }
+        /* 蓝白专业页头 */
+        .header { background: var(--blue); color: white; padding: 20px 15px; text-align: center; }
+        .header h1 { margin: 0; font-size: 22px; }
         .header p { margin: 5px 0 0; font-size: 13px; opacity: 0.9; }
 
-        /* 核心计时器 (30s & 60s) */
-        .timer-panel { background: var(--light-blue); margin: 15px; padding: 20px; border-radius: 16px; text-align: center; }
+        /* 计时器模块 */
+        .timer-panel { background: var(--card); margin: 15px; padding: 20px; border-radius: 16px; text-align: center; box-shadow: 0 4px 15px rgba(0,122,255,0.1); }
+        #timer-label { font-size: 12px; color: var(--blue); font-weight: bold; margin-bottom: 5px; }
         #display { font-size: 60px; font-weight: bold; color: var(--blue); font-family: monospace; margin: 10px 0; }
         .btn-group { display: flex; gap: 10px; }
         .btn { flex: 1; border: none; padding: 15px; border-radius: 12px; color: white; font-weight: bold; font-size: 14px; background: var(--blue); cursor: pointer; }
-        .btn-reset { background: #D1D1D6; color: #333; }
+        .btn-orange { background: var(--accent); }
 
-        /* 教学环节：碎片化、高频、有趣 */
-        .section-title { padding: 15px 15px 5px; font-size: 14px; color: var(--blue); font-weight: bold; }
-        .card { background: white; margin: 10px 15px; padding: 15px; border-radius: 12px; border: 1px solid #E5E5EA; box-shadow: 0 2px 5px rgba(0,0,0,0.02); }
-        .card-h { display: flex; justify-content: space-between; font-weight: bold; margin-bottom: 8px; }
-        .card-t { font-size: 12px; color: var(--gray); }
-        .card-b { font-size: 14px; line-height: 1.6; color: #3A3A3C; }
+        /* 90分钟阶梯流程 */
+        .stage-box { padding: 0 15px; }
+        .stage-card { background: var(--card); margin-bottom: 12px; border-radius: 12px; padding: 15px; border-left: 5px solid var(--blue); }
+        .stage-time { float: right; font-size: 12px; color: var(--blue); font-weight: bold; background: #E5F1FF; padding: 2px 8px; border-radius: 8px; }
+        .stage-title { font-weight: bold; font-size: 16px; margin-bottom: 8px; display: block; }
+        .stage-content { font-size: 14px; line-height: 1.6; color: #3A3A3C; }
+        .stage-content b { color: var(--blue); }
         
-        /* 简单动作示意图 (纯CSS绘制，绝不乱码) */
-        .visual-tip { background: #F2F2F7; padding: 10px; border-radius: 8px; margin: 10px 0; font-family: monospace; text-align: center; color: var(--blue); }
+        /* 重点提示 */
+        .point-box { background: #FFF9E6; border: 1px dashed var(--accent); padding: 12px; border-radius: 10px; margin: 15px; font-size: 13px; color: #856404; }
 
         .footer { position: fixed; bottom: 0; width: 100%; background: white; display: flex; justify-content: space-around; padding: 15px 0; border-top: 1px solid #E5E5EA; }
     </style>
@@ -36,59 +38,74 @@
 <body>
 
 <div class="header">
-    <h1>跳绳 L3：弹簧豆豆跳</h1>
-    <p>1-2年级 (9人小班) | 90分钟实战教案</p>
+    <h1>第3课：脚尖频率与弹性</h1>
+    <p>1-2年级 (9人班) | 90分钟完整流程</p>
 </div>
 
 <div class="timer-panel">
-    <div id="status" style="font-size: 12px; color: var(--blue); font-weight: bold;">准备挑战</div>
+    <div id="timer-label">准备开始挑战</div>
     <div id="display">00:00</div>
     <div class="btn-group">
-        <button class="btn" onclick="run(30)">30s 挑战</button>
-        <button class="btn" onclick="run(60)">60s 测评</button>
-        <button class="btn btn-reset" onclick="reset()">复位</button>
+        <button class="btn btn-orange" onclick="run(30)">30s 极速点地</button>
+        <button class="btn" onclick="run(60)">60s 稳健测评</button>
+        <button class="btn" style="background:#8E8E93" onclick="resetT()">重置</button>
     </div>
 </div>
 
-<div class="section-title">第一部分：热身与习惯 (20')</div>
-<div class="card">
-    <div class="card-h"><span>1. 揪尾巴大逃杀</span><span class="card-t">10'</span></div>
-    <div class="card-b">绳子塞腰后。9人互揪，看谁留到最后。侧重高频变向跑，活动脚踝。</div>
-</div>
-<div class="card">
-    <div class="card-h"><span>2. 量绳侦探</span><span class="card-t">10'</span></div>
-    <div class="card-b">脚踩中点拉直绳。<b>标准：</b>把手齐锁骨。教练逐一检查 9 个人的绳长，太长就打个结。</div>
+<div class="point-box">
+    <b>📢 第3课纠错核心：</b>
+    1. <b>脚跟不着地：</b>想象脚底有弹簧。<br>
+    2. <b>跳得低：</b>绳子刚过脚底即可，不要“跳大绳”。
 </div>
 
-<div class="section-title">第二部分：核心技能 (45')</div>
-<div class="card">
-    <div class="card-h"><span>3. 动作：手腕摇小圆</span><span class="card-t">15'</span></div>
-    <div class="visual-tip">臂 贴 身 — 腕 摇 圆</div>
-    <div class="card-b">单手握两柄，在侧面摇，听绳子打地的“啪嗒”声。要求声音节奏要稳。</div>
-</div>
-<div class="card">
-    <div class="card-h"><span>4. 动作：并脚猫咪跳</span><span class="card-t">15'</span></div>
-    <div class="visual-tip">并 脚 — 膝 弯 — 脚 尖 跳</div>
-    <div class="card-b">跳起高度 5cm。纠错：杜绝“全脚掌”落地声。谁跳得响，谁就去当“重重象”，安静的当“轻盈猫”。</div>
-</div>
-<div class="card">
-    <div class="card-h"><span>5. 游戏：红绿灯行进跳</span><span class="card-t">15'</span></div>
-    <div class="card-b">绿灯边跳边跑前进，红灯立刻踩绳立定。训练对绳子的控制力和瞬间制动能力。</div>
-</div>
+<div class="stage-box">
+    <div class="stage-card">
+        <span class="stage-time">0-15'</span>
+        <span class="stage-title">一、热身：脚尖地雷阵</span>
+        <div class="stage-content">
+            将绳子摆在地上做“地雷”。学生用<b>脚尖弹性走</b>穿梭其中，不能碰到绳子。
+        </div>
+    </div>
 
-<div class="section-title">第三部分：测评与总结 (25')</div>
-<div class="card">
-    <div class="card-h"><span>6. 30s/60s 计时赛</span><span class="card-t">15'</span></div>
-    <div class="card-b">利用上方计时器，分组测验。记录 9 人成绩，建立自信心。</div>
-</div>
-<div class="card">
-    <div class="card-h"><span>7. 放松与“豆豆王”评选</span><span class="card-t">10'</span></div>
-    <div class="card-b">坐地拉伸小腿（小猫推墙）。颁发虚拟勋章。</div>
+    <div class="stage-card">
+        <span class="stage-time">15-37'</span>
+        <span class="stage-title">二、技能：并脚穿越红外线</span>
+        <div class="stage-content">
+            1. <b>红外线穿越：</b>绳子拉直离地3cm，学生并脚连续跳过。<br>
+            2. <b>手腕节奏：</b>模仿“豆豆超人”，大手臂贴身，转动旋转手腕。
+        </div>
+    </div>
+
+    <div class="stage-card">
+        <span class="stage-time">37-50'</span>
+        <span class="stage-title">三、专项：侧摇同步</span>
+        <div class="stage-content">
+            单手握双把手在侧面摇绳。听“啪嗒”响，脚跟着节奏点。针对 9 个孩子逐一纠错。
+        </div>
+    </div>
+
+    <div class="stage-card">
+        <span class="stage-time">50-70'</span>
+        <span class="stage-title">四、竞赛：马达大逃杀</span>
+        <div class="stage-content">
+            1. <b>马达挑战：</b>30秒不带绳快速点地 PK。<br>
+            2. <b>大逃杀：</b>用“脚尖跳”步法在操场躲避老师。
+        </div>
+    </div>
+
+    <div class="stage-card">
+        <span class="stage-time">70-90'</span>
+        <span class="stage-title">五、总结：小猫推墙</span>
+        <div class="stage-content">
+            1. <b>拉伸：</b>面向墙壁（或扶树）做小腿拉伸。<br>
+            2. <b>奖励：</b>评选今天的“首席弹簧豆豆”。
+        </div>
+    </div>
 </div>
 
 <div class="footer">
-    <span style="color:var(--blue); font-weight:bold;">📋 详情</span>
-    <span style="color:var(--gray);">📊 记录</span>
+    <span style="color:var(--blue); font-weight:bold;">📋 实战教案</span>
+    <span style="color:var(--gray);" onclick="alert('数据统计功能开发中')">📊 成绩记录</span>
 </div>
 
 <script>
@@ -97,17 +114,17 @@
         clearInterval(t);
         let left = s;
         update(left);
-        document.getElementById('status').innerText = s + "秒挑战开始！";
+        document.getElementById('timer-label').innerText = s + "秒计时开始！";
         t = setInterval(() => {
             left--; update(left);
             if (left <= 0) {
                 clearInterval(t);
-                document.getElementById('status').innerText = "挑战结束！";
-                alert("⏰ 时间到！");
+                document.getElementById('timer-label').innerText = "时间到！";
+                alert("⏰ 挑战结束！");
             }
         }, 1000);
     }
-    function reset() { clearInterval(t); update(0); document.getElementById('status').innerText = "准备挑战"; }
+    function resetT() { clearInterval(t); update(0); document.getElementById('timer-label').innerText = "准备开始挑战"; }
     function update(s) {
         let m = Math.floor(s/60);
         let sec = s%60;
